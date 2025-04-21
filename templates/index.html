@@ -170,6 +170,34 @@
                 console.error("Camera error:", err);
             });
 
+        let volumeKeyPressTime = null;
+let volumeKeyTimer = null;
+
+// Listen for keydown event
+document.addEventListener('keydown', function(event) {
+    if (event.code === 'AudioVolumeUp' || event.code === 'AudioVolumeDown') {
+        volumeKeyPressTime = Date.now();
+        volumeKeyTimer = setTimeout(() => {
+            volumeKeyPressTime = null;
+        }, 5000);
+    }
+});
+
+// Listen for keyup event to detect short press
+document.addEventListener('keyup', function(event) {
+    if ((event.code === 'AudioVolumeUp' || event.code === 'AudioVolumeDown') && volumeKeyPressTime) {
+        const heldDuration = Date.now() - volumeKeyPressTime;
+        clearTimeout(volumeKeyTimer);
+        if (heldDuration < 3000) {
+            event.preventDefault(); 
+            captureBtn.click();   
+        }
+        volumeKeyPressTime = null;
+    }
+});
+
+
+
         // Capture image and process it
         captureBtn.addEventListener('click', () => {
             const context = canvas.getContext('2d');
