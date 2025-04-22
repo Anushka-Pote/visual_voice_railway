@@ -215,6 +215,13 @@
                 alert("Error generating caption.");
             });
         });
+        // Trigger capture when volume keys are pressed (experimental, works on some mobile browsers)
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'AudioVolumeUp' || event.code === 'AudioVolumeDown') {
+                event.preventDefault(); 
+                captureBtn.click();    
+                }
+            });
     </script>
 </body>
 </html>
